@@ -73,6 +73,13 @@
   .copybtn:active{background:var(--navy-2);}
   .copybtn:focus-visible{outline:3px solid var(--navy);outline-offset:2px;}
 
+  .sharebar{background:var(--navy);color:#fff;border-radius:12px;padding:12px 16px;margin:18px 0 4px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(31,56,100,.18);}
+  .sharebar .lead{font-size:12.5px;color:#C4D2EA;margin:0;flex:none;font-weight:700;}
+  .sharebar .url{flex:1;min-width:180px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+    border-radius:8px;padding:8px 12px;font-family:inherit;font-size:13.5px;color:#fff;word-break:break-all;}
+  .sharebar .copybtn{background:#fff;color:var(--navy);}
+  .sharebar .copybtn:active{background:#E9EEF6;}
   .note{margin-top:30px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;line-height:1.7;}
 
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;
@@ -100,6 +107,12 @@
   </header>
 
   <div class="wrap">
+
+    <div class="sharebar">
+      <span class="lead">📱 このアプリのURL</span>
+      <span class="url" id="appUrl">https://tinyurl.com/jurihatool</span>
+      <button class="copybtn" id="appUrlBtn">URLをコピー</button>
+    </div>
 
     <section class="group jinji">
       <h2><span class="bar"></span>人事</h2>
@@ -233,6 +246,13 @@ https://tinyurl.com/jurihakintai
   var btn=document.getElementById('copyBtn');
   var toast=document.getElementById('toast'); var tt;
   function showToast(msg){ toast.textContent=msg; toast.classList.add('on'); clearTimeout(tt); tt=setTimeout(function(){toast.classList.remove('on');},1800); }
+  var appUrlBtn=document.getElementById('appUrlBtn');
+  if(appUrlBtn){ appUrlBtn.onclick=function(){
+    var u=document.getElementById('appUrl').textContent.trim();
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(u).then(function(){ showToast('URLをコピーしました'); }, function(){ fallback(u); });
+    } else { fallback(u); }
+  }; }
   btn.onclick=function(){
     var text=document.getElementById('announce').textContent;
     if(navigator.clipboard && navigator.clipboard.writeText){
